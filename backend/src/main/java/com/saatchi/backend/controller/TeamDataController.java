@@ -16,7 +16,10 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
 
 
-
+/**
+ * REST controller for accessing AI platform usage metrics for teams.
+ * Provides endpoints to fetch usage data by teamId.
+ */
 @RestController
 public class TeamDataController {
 
@@ -27,19 +30,20 @@ public class TeamDataController {
         this.service = service;
     }
 
-    /*@PostMapping("/team")
-    public TeamData save(@RequestBody TeamData data) {
-            
-        return service.save(data);
-    }
-*/
+    /**
+     * GET endpoint to retrieve all usage records for a specific team.
+     *
+     * @param teamId the ID of the team to fetch usage data for
+     * @return a list of TeamData objects representing usage metrics
+     * @throws IllegalArgumentException if teamId is less than or equal to 0
+     * @throws java.util.NoSuchElementException if no records exist for the team
+     */
     @GetMapping("/team/{teamId}")
     public List<TeamData> getTeamDataById(@PathVariable("teamId") int teamId) {
         List<TeamData> data = null;
         try {
             data = service.getTeamDataByTeamId(teamId);
         } catch (Exception e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
         }
         return data;
