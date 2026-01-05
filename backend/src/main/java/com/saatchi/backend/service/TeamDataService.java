@@ -37,7 +37,6 @@ public class TeamDataService {
             throw new NoSuchElementException("Team not found");
        }
 
-        System.out.println("DEBUG: Found team data: " + data);
         return data;
     }
 }
