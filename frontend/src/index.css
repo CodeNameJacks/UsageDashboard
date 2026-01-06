@@ -1,4 +1,4 @@
-.some-page-wrapper {
+.page-wrapper {
   
   background-color: #f0e8e8;;
   width: 80%;
@@ -22,44 +22,48 @@
   flex-direction: column;
   flex-basis: 100%;
   flex: 1;
+ 
 }
 
-
+h2{
+  font-size: 24px;
+  text-align: center;
+  font-family: Arial, Helvetica, sans-serif;
+  margin-top: 2%;
+}
 
 .chart {
   background-color: #FFFFFF;
-  height: 500px;
-  width: 80%;
+  height: 400px;
+  width: 95%;
   text-align: center;
-  margin-right: 10%;
-  margin-left:10%;
-  padding: 0% !important;
+  margin-left: 2.5%;
+  margin-right: 2.5%;
+  padding-top: 0% !important;
   border-radius: 2.5%;
   display: flex;
   justify-content: center; 
-  align-items: center;  
+  align-items: center;
+  
+
+  
 }
 
-.apiText, .tokensText, .costText{
-    text-align: center;
-    
-    border-radius: 5%;
-    width: 60%;
-    background-color: white;
-    height: 200px;
-    margin-left:20%;
-}
 
 .chartContainer {
   display: flex;
-  justify-content: center; 
-  align-items: center;     /* vertical (if height is set) */
+  justify-content: center;
+  gap: 50px !important; 
+    
 }
+
+
 
 @media screen and (max-width: 800px) {
   .row {
     flex-direction: column;
   }
 
+  
   
 }
