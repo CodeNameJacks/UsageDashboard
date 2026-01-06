@@ -1,6 +1,5 @@
-import React, { useEffect, useState, type JSX } from "react";
+import { useEffect, useState, type JSX } from "react";
 import { type TeamDashboardResponse } from "../../types/teamDashboard";
-import { Bar, Line } from "react-chartjs-2";
 import { LineChart } from "../../components/LineChart";
 import { BarChart } from "../../components/BarChart";
 import { HorizontalChart } from "../../components/HorizontalChart";
@@ -13,6 +12,7 @@ export default function TeamDashboard(): JSX.Element {
   const [data, setData] = useState<TeamDashboardResponse | null>(null);
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
+  const teams = Array.from({ length: 10 }, (_, i) => i + 1); // 1 to 10
 
   useEffect(() => {
     async function fetchData() {
@@ -43,6 +43,11 @@ export default function TeamDashboard(): JSX.Element {
 
     fetchData();
   }, [teamId]);
+
+  //handle dropdown selction change
+  const handleTeamChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    setTeamId(Number(e.target.value));
+  };
 
   // Chart.js data configurations
   const top3Data = data
@@ -188,11 +193,23 @@ export default function TeamDashboard(): JSX.Element {
           {console.log(data)}
           <div className='page-wrapper'>
             <h2>Usage Dashboard</h2>
+            <div className='selectTeam'>
+              <label htmlFor="team-select">
+                Select Team:{" "}
+              </label>
+              <select id="teamSelect" value={teamId} onChange={handleTeamChange}>
+              {teams.map((team) => (
+                <option key={team} value={team}>
+                  Team {team}
+                </option>
+              ))}
+            </select>
+          </div>
             {loading ? (
-          <p>Loading...</p>
-        ) : error ? (
-          <p style={{ color: "red" }}>Error: {error}</p>
-        ) : data ? (
+              <p className='loading'>Loading...</p>
+            ) : error ? (
+              <p style={{ color: "red" }}>Error: {error}</p>
+            ) : data ? (
           <>
             <div className='row'>
               <div className='column'>
@@ -203,20 +220,19 @@ export default function TeamDashboard(): JSX.Element {
                 </div>
               </div>
               <div className='column'>
-                <div className='tokens'>
-                <div className='chart'>
-                  <div className='chartContainer' style={{ width: 450 }}>
-                   {data && !loading ? <HorizontalChart data={tokenData} options={tokenOptions}/> : null}
+                <div className='tokens' id='tokens'>
+                  <div className='chart'>
+                    <div className='chartContainer' style={{ width: 450 }}>
+                    {data && !loading ? <HorizontalChart data={tokenData} options={tokenOptions}/> : null}
+                    </div>
                   </div>
                 </div>
               </div>
-              </div>
-              
             </div>
             </>): null}
             <div className='row 2'>
               <div className='column'>
-                <div className='chart'>
+                <div className='chart' id='top3'>
                   <div className='chartContainer' style={{ width: 450 }}>
                    {data && !loading ? <BarChart data={top3Data} options={top3Options}/> : null}
                   </div>
