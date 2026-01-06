@@ -4,31 +4,12 @@ import type { ChartData, ChartOptions } from "chart.js";
 import "../lib/chartSetup";
 
 
-//Chart.register(BarController, BarElement);
-const data: ChartData<"bar"> = {
-  labels: ["Jan", "Feb", "Mar", "Apr"],
-  datasets: [
-    {
-      label: "Sales",
-      data: [120, 190, 300, 250],
-      backgroundColor: "rgba(75, 192, 192, 0.6)",
-    },
-  ],
+type BarChartProps = {
+  data: ChartData<"bar">;
+  options?: ChartOptions<"bar">;
 };
 
-const options: ChartOptions<"bar"> = {
-  responsive: true,
-  plugins: {
-    legend: {
-      position: "top",
-    },
-    title: {
-      display: true,
-      text: "Monthly Sales",
-    },
-  },
-};
 
-export function BarChart() {
+export function BarChart({data, options}: BarChartProps) {
   return <Bar data={data} options={options} />;
 }
