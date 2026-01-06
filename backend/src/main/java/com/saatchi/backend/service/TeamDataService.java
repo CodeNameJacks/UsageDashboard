@@ -6,11 +6,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.NoSuchElementException;
-
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
-
-import com.saatchi.backend.model.TeamData;
 import com.saatchi.backend.projection.ModelUsageSummary;
 import com.saatchi.backend.projection.TeamDataSummary;
 import com.saatchi.backend.repository.TeamDataRepository;
@@ -28,12 +25,24 @@ public class TeamDataService {
     }
 
     /**
-     * Retrieves all usage data for a given team.
+     * Retrieves usage data for a given team, including daily totals and top 3 models.
+     * 
+     * The returned map is structured as follows:
+     * 
+     * dailyTotals:
+     *   date: list of dates
+     *   totalCalls: list of total calls per date
+     *   totalTokens: list of tokens consumed per date
+     *   totalEstimatedCost: list of estimated costs per date
+     * 
+     * topModels:
+     *   models: list of top 3 model names
+     *   calls: list of API calls per top model
      *
-     * @param teamId the ID of the team
-     * @return a list of TeamData objects for the given team
+     * @param teamId the ID of the team to retrieve data for
+     * @return a map containing daily totals and top models for the team
      * @throws IllegalArgumentException if teamId is less than or equal to 0
-     * @throws NoSuchElementException   if no records exist for the team
+     * @throws NoSuchElementException if no data exists for the given team
      */
     public Map<String, Object> getTeamDataByTeamId(int teamId) {
 
