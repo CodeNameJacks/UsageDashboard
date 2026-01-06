@@ -1,16 +1,21 @@
 package com.saatchi.backend.controller;
 
-import java.util.List;
+import java.util.Map;
+import java.util.NoSuchElementException;
+
+//import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.saatchi.backend.model.TeamData;
+import com.saatchi.backend.projection.TeamDataSummary;
 import com.saatchi.backend.repository.TeamDataRepository;
 import com.saatchi.backend.service.TeamDataService;
 
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -21,6 +26,7 @@ import org.springframework.web.bind.annotation.RequestParam;
  * Provides endpoints to fetch usage data by teamId.
  */
 @RestController
+@CrossOrigin(origins = "http://localhost:5174")
 public class TeamDataController {
 
     
@@ -39,16 +45,19 @@ public class TeamDataController {
      * @throws java.util.NoSuchElementException if no records exist for the team
      */
     @GetMapping("/team/{teamId}")
-    public List<TeamData> getTeamDataById(@PathVariable("teamId") int teamId) {
-        List<TeamData> data = null;
+    public Map<String, Object> getTeamData(@PathVariable int teamId) {
+        
         try {
-            data = service.getTeamDataByTeamId(teamId);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return data;
-    }
-    
-    
+            return service.getTeamDataByTeamId(teamId);
+        } catch (IllegalArgumentException | NoSuchElementException ex) {
+            // rethrow so Spring returns 400/404 via default handling
+            throw ex;
 
+        } catch (Exception ex) {
+            // wrap unexpected errors
+            throw new RuntimeException("Failed to retrieve team data", ex);
+        }
+    }
 }
+    
+    

@@ -1,11 +1,18 @@
 package com.saatchi.backend.service;
 
+import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.NoSuchElementException;
 
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import com.saatchi.backend.model.TeamData;
+import com.saatchi.backend.projection.ModelUsageSummary;
+import com.saatchi.backend.projection.TeamDataSummary;
 import com.saatchi.backend.repository.TeamDataRepository;
 
 /**
@@ -28,15 +35,59 @@ public class TeamDataService {
      * @throws IllegalArgumentException if teamId is less than or equal to 0
      * @throws NoSuchElementException   if no records exist for the team
      */
-    public List<TeamData> getTeamDataByTeamId(int teamId){
-        if(teamId < 0 ){
+    public Map<String, Object> getTeamDataByTeamId(int teamId) {
+
+        if (teamId <= 0) {
             throw new IllegalArgumentException("A valid team id is required");
         }
-       List<TeamData> data = teamDataRepository.findAllByTeamId(teamId);
-       if(data.isEmpty()){
-            throw new NoSuchElementException("Team not found");
-       }
+        // get daily totals
+        List<TeamDataSummary> totals = teamDataRepository.findTeamTotals(teamId);
 
-        return data;
+        if (totals == null || totals.isEmpty()) {
+            throw new NoSuchElementException("Team not found");
+        }
+        // get top models
+        List<ModelUsageSummary> topModelsRaw =
+            teamDataRepository.findTopModelsByTeamId(teamId, PageRequest.of(0, 3));
+
+         // reshape top models
+        List<String> models = new ArrayList<>();
+        List<Long> calls = new ArrayList<>();
+
+        for (ModelUsageSummary m : topModelsRaw) {
+            models.add(m.getModel());
+            calls.add(m.getCalls());
+        }
+
+        Map<String, Object> topModels = new HashMap<>();
+        topModels.put("models", models);
+        topModels.put("calls", calls);    
+
+        //reshape daily totals
+        List<LocalDate> dates = new ArrayList<>();
+        List<Long> totalCallsArr = new ArrayList<>();
+        List<Long> totalTokensArr = new ArrayList<>();
+        List<Double> totalEstimatedCostsArr = new ArrayList<>();
+
+        for (TeamDataSummary t : totals) {
+            dates.add(t.getDate());
+            totalCallsArr.add(t.getTotalCalls());
+            totalTokensArr.add(t.getTotalTokens());
+            totalEstimatedCostsArr.add(t.getTotalEstimatedCost());
+        }
+
+        Map<String, Object> dailyTotals = new HashMap<>();
+        dailyTotals.put("date", dates);
+        dailyTotals.put("totalCalls", totalCallsArr);
+        dailyTotals.put("totalTokens", totalTokensArr);
+        dailyTotals.put("totalEstimatedCost", totalEstimatedCostsArr);
+        
+
+        Map<String, Object> response = new HashMap<>();
+        response.put("dailyTotals", dailyTotals);
+        response.put("topModels", topModels);
+
+        return response;
     }
 }
+
