@@ -197,9 +197,9 @@ export default function TeamDashboard(): JSX.Element {
               <label htmlFor="team-select">
                 Select Team:{" "}
               </label>
-              <select id="teamSelect" value={teamId} onChange={handleTeamChange}>
+              <select id="teamSelect" value={teamId} tabIndex={0} onChange={handleTeamChange}>
               {teams.map((team) => (
-                <option key={team} value={team}>
+                <option key={team} value={team} tabIndex={0}>
                   Team {team}
                 </option>
               ))}
