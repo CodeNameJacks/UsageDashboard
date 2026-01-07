@@ -38,7 +38,7 @@ class TeamDataServiceTest {
     void getTeamDataByTeamId_success() {
         int teamId = 1;
 
-        // --- mock daily totals ---
+        // mock daily totals
         TeamDataSummary summary = mock(TeamDataSummary.class);
         when(summary.getDate()).thenReturn(LocalDate.of(2026, 1, 1));
         when(summary.getTotalCalls()).thenReturn(100L);
@@ -47,7 +47,7 @@ class TeamDataServiceTest {
 
         List<TeamDataSummary> summaries = List.of(summary);
 
-        // --- mock top models ---
+        // mock top models
         ModelUsageSummary modelSummary = mock(ModelUsageSummary.class);
         when(modelSummary.getModel()).thenReturn("Luna");
         when(modelSummary.getCalls()).thenReturn(50L);
@@ -62,11 +62,11 @@ class TeamDataServiceTest {
                 any(PageRequest.class))
         ).thenReturn(topModels);
 
-        // --- execute ---
+        // execute 
         Map<String, Object> result =
             teamDataService.getTeamDataByTeamId(teamId);
         
-        // --- verify ---
+        // verify 
         assertNotNull(result);
         assertTrue(result.containsKey("dailyTotals"));
         assertTrue(result.containsKey("topModels"));
