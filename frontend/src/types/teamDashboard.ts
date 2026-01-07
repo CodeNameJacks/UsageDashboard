@@ -4,6 +4,7 @@ export interface TopModels {
 }
 
 export interface TeamDashboardResponse {
+  dailyTotals: any;
   totalCalls: number;
   totalEstimatedCost: number;
   topModels: TopModels;
