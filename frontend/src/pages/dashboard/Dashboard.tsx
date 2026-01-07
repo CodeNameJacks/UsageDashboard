@@ -198,20 +198,29 @@ export default function TeamDashboard(): JSX.Element {
                 Select Team:{" "}
               </label>
               <select id="teamSelect" value={teamId} tabIndex={0} onChange={handleTeamChange}>
-              {teams.map((team) => (
-                <option key={team} value={team} tabIndex={0}>
-                  Team {team}
-                </option>
-              ))}
-            </select>
-          </div>
-            {loading ? (
-              <p className='loading'>Loading...</p>
-            ) : error ? (
-              <p style={{ color: "red" }}>Error: {error}</p>
-            ) : data ? (
-          <>
-            <div className='row'>
+                {teams.map((team) => (
+                  <option key={team} value={team} tabIndex={0}>
+                    Team {team}
+                  </option>
+                ))}
+              </select>
+            </div>
+            <div className='selectDate'>
+              <label>
+              Date range:{" "}
+                <select id='dateSelect'>
+                  <option >Last 7 days</option>
+                  <option >Last 3 months</option>
+                  <option >Last 6 months</option>
+                  <option >Last year</option>
+                </select>
+              </label>
+            </div>
+
+            {error && <p style={{ color: "red" }}>Error: {error}</p>}
+          
+           {data && (
+           <> <div className='row'>
               <div className='column'>
                 <div className='chart'>
                   <div className='chartContainer' style={{ width: 450 }}>
@@ -229,7 +238,6 @@ export default function TeamDashboard(): JSX.Element {
                 </div>
               </div>
             </div>
-            </>): null}
             <div className='row 2'>
               <div className='column'>
                 <div className='chart' id='top3'>
@@ -245,8 +253,8 @@ export default function TeamDashboard(): JSX.Element {
                   </div>
                 </div>
               </div>
-              
-            </div>
+            </div></>)}
+            {loading && <div className="loading-overlay">Loading…</div>}
           </div>
         </>
         
