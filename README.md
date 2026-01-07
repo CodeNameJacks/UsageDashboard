@@ -1,6 +1,6 @@
 # Usage Dashboard
 
-This dashboard displays usage metrics for a team. It’s built in Java Spring Boot on the back end and React Typescript on the front end.
+This dashboard displays an AI platform's usage metrics for a team. It’s built in Java Spring Boot on the back end and React Typescript on the front end.
 Mock data has been generated using Mockaroo and is stored in a remote Mysql database. The raw sql data can be found in the sql folder that is in the project’s root directory.
 
 Assumptions:
