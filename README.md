@@ -10,11 +10,11 @@ Assumptions:
 
 
 To run the project:
--	Unzip the sip file.
+-	Unzip the zip file.
 -	In you terminal navigate to the `backend` folder and enter `mvn spring-boot: run`.
 -	Open another terminal session and navigate to the `frontend` folder. Enter `npm install` to install the dependencies. The enter `npm start` to run the application.
 -	In your web browser enter `https://localhost:5173`. You should be able to see the running application.
--	To shut down the backend and frontend servers, go toe the respective folders in the terminal and press `control + c.
+-	To shut down the backend and frontend servers, go toe the respective folders in the terminal and press `control + c`.
 
 
 To run unit test:
